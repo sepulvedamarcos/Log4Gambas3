@@ -46,7 +46,6 @@ git clone https://github.com/sepulvedamarcos/Log4Gambas3.git
 cp Log4Gambas3/Log4Gambas3.class ~/tu-proyecto/
 ```
 
-
 ## 📖 Uso básico
 
 ### Inicio rápido
@@ -56,19 +55,19 @@ cp Log4Gambas3/Log4Gambas3.class ~/tu-proyecto/
 Public logger As Log4Gambas3
 
 Public Sub Main()
-  
+
   ' Crear instancia del logger
   logger = New Log4Gambas3
-  
+
   ' Configurar nombre de la aplicación
   logger.SetAppName("MiApp")
-  
+
   ' Configuración mínima - salida a consola
   logger.SetOutput(Log4Gambas3.OUTPUT_CONSOLE)
-  
+
   ' ¡Listo! Ahora puedes usar el logger
   logger.Info("¡Aplicación iniciada!")
-  
+
 End
 ```
 
@@ -107,16 +106,12 @@ logger.SetAppName("MiApp")
 
 **Importante:** `SetLogFile()` define el **directorio** donde se guardarán los logs, no el nombre del archivo. Los archivos se crean automáticamente con el formato: `nombreapp-YYYY-MM-DD.log`
 
-### Rotación por tamaño (en desarrollo)
+### Rotación por tamaño
 
 ```gambas
 ' Configurar tamaño máximo por archivo
 logger.SetMaxFileSize(10 * 1024 * 1024)  ' 10MB
-' Nota: Funcionalidad preparada para futura implementación
-' Actualmente Log4Gambas3 crea automáticamente un archivo nuevo cada día
 ```
-
-**Estado actual:** La rotación por tamaño está definida en la API pero aún no está implementada funcionalmente. Por ahora, la rotación es automática por fecha (un archivo nuevo cada día).
 
 ### Rotación por cantidad de archivos
 
@@ -194,45 +189,46 @@ logger.SetAppName("MiApp")
 Public logger As Log4Gambas3
 
 Public Sub Main()
-  
+
   ' Inicializar el logger
   logger = New Log4Gambas3
-  
+
   ' Configurar nombre de la aplicación
   logger.SetAppName("MiApp")
-  
+
   ' Configuración para producción
   logger.SetOutput(Log4Gambas3.OUTPUT_FILE)
   logger.SetLogFile(User.Home &/ ".miapp/logs")
   logger.SetMaxFiles(10)                     ' Mantener 10 días de logs
   logger.SetMinLevel(Log4Gambas3.LEVEL_INFO) ' Solo INFO y superiores
-  
+
   logger.Info("=== Aplicación MiApp v1.0 iniciada ===")
   logger.Info("Usuario: " & User.Name)
   logger.Info("Sistema: " & System.Host)
-  
-  Try
+
+
     InicializarAplicacion()
+
   Catch
     logger.Fatal("Error crítico al iniciar: " & Error.Text)
     logger.Fatal("Ubicación: " & Error.Where)
     Quit
-  End Try
-  
+
+
 End
 
 Public Sub InicializarAplicacion()
-  
+
   logger.Debug("Iniciando carga de configuración...")
-  
+
   If Not Exist(User.Home &/ ".miapp") Then
     logger.Warning("Directorio de configuración no existe, creándolo")
     Mkdir User.Home &/ ".miapp"
   Endif
-  
+
   logger.Info("Configuración cargada correctamente")
   logger.Debug("Total de plugins cargados: 5")
-  
+
 End
 ```
 
@@ -381,11 +377,11 @@ logger.Error("Falló conexión: " & Error.Text)  ' Errores recuperables
 logger.Warning("Cache expirado después de " & timeout & " segundos")
 
 ' 5. Usa Try/Catch con logging
-Try
+
   ConexionBD()
 Catch
   logger.Error("Error en BD: " & Error.Text & " en " & Error.Where)
-End Try
+
 ```
 
 ### ❌ Evita esto
