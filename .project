@@ -1,0 +1,22 @@
+# Gambas Project File 3.0
+Title=Libreria de log para Gambas
+Startup=FMain
+Icon=Iconos/penguin.png
+Version=3.0.1
+Component=gb.image
+Component=gb.gui
+Component=gb.form
+Component=gb.settings
+Description="Libreria para generar una logger basico y simple"
+Authors="Marcos Sepulveda"
+TabSize=2
+Translate=1
+Language=en_US
+Type=Library
+Maintainer=marcos
+Vendor=sepulvedamarcos
+Address=marcos@marcos-kdeneon
+License=General Public License
+Prefix=1
+PackageName=sepulvedamarcos-log4gambas-2.0.0
+Packager=1

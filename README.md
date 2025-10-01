@@ -30,14 +30,22 @@ wget https://raw.githubusercontent.com/sepulvedamarcos/Log4Gambas3/main/Log4Gamb
 # O simplemente copia el archivo .class a tu proyecto
 ```
 
-Luego actualiza tu proyecto en el IDE de Gambas (F5).
+Luego actualiza tu proyecto en el IDE de Gambas.
 
-### Opción 2: Clonar el repositorio
+### Opción 2: Clonar el repositorio crear la aplicación y agregala al proyecto una vez compilada
 
 ```bash
 git clone https://github.com/sepulvedamarcos/Log4Gambas3.git
 cp Log4Gambas3/Log4Gambas3.class ~/tu-proyecto/
 ```
+
+### Opción 3: Bajar el release desde la pagina de github
+
+```bash
+git clone https://github.com/sepulvedamarcos/Log4Gambas3.git
+cp Log4Gambas3/Log4Gambas3.class ~/tu-proyecto/
+```
+
 
 ## 📖 Uso básico
 
@@ -52,6 +60,9 @@ Public Sub Main()
   ' Crear instancia del logger
   logger = New Log4Gambas3
   
+  ' Configurar nombre de la aplicación
+  logger.SetAppName("MiApp")
+  
   ' Configuración mínima - salida a consola
   logger.SetOutput(Log4Gambas3.OUTPUT_CONSOLE)
   
@@ -60,6 +71,8 @@ Public Sub Main()
   
 End
 ```
+
+**Nota importante sobre `SetAppName()`:** Este método define el nombre que aparecerá en cada línea de log y también se usará como prefijo en los nombres de archivo (ejemplo: `MiApp-2025-09-30.log`). Si no lo configuras, se usará "app" por defecto.
 
 ### Los cinco niveles de logging
 
@@ -87,32 +100,52 @@ logger.Fatal("Base de datos inaccesible, cerrando aplicación")
 ```gambas
 ' Configurar salida a archivo
 logger.SetOutput(Log4Gambas3.OUTPUT_FILE)
-logger.SetLogFile(User.Home &/ ".miapp/logs/aplicacion.log")
+logger.SetLogFile(User.Home &/ ".miapp/logs")
+logger.SetAppName("MiApp")
+' El archivo será: MiApp-2025-09-30.log (se crea automáticamente por fecha)
 ```
 
-### Rotación por tamaño
+**Importante:** `SetLogFile()` define el **directorio** donde se guardarán los logs, no el nombre del archivo. Los archivos se crean automáticamente con el formato: `nombreapp-YYYY-MM-DD.log`
+
+### Rotación por tamaño (en desarrollo)
 
 ```gambas
-' Rotar cuando el archivo supere 10MB
-logger.SetMaxFileSize(10 * 1024 * 1024)
-' Resultado: aplicacion.log, aplicacion.log.1, aplicacion.log.2, etc.
+' Configurar tamaño máximo por archivo
+logger.SetMaxFileSize(10 * 1024 * 1024)  ' 10MB
+' Nota: Funcionalidad preparada para futura implementación
+' Actualmente Log4Gambas3 crea automáticamente un archivo nuevo cada día
 ```
+
+**Estado actual:** La rotación por tamaño está definida en la API pero aún no está implementada funcionalmente. Por ahora, la rotación es automática por fecha (un archivo nuevo cada día).
 
 ### Rotación por cantidad de archivos
 
 ```gambas
 ' Mantener solo los últimos 5 archivos de log
 logger.SetMaxFiles(5)
-' Se elimina el más antiguo al crear uno nuevo
+' Cuando se supera este límite, se elimina automáticamente el archivo más antiguo
+' Los archivos tienen formato: miapp-2025-09-28.log, miapp-2025-09-29.log, etc.
 ```
 
-### Rotación por fecha
+**Cómo funciona:** Log4Gambas3 revisa automáticamente la cantidad de archivos `.log` en el directorio que coincidan con el nombre de tu aplicación. Si hay más archivos que el máximo configurado, elimina los más antiguos basándose en el nombre del archivo (orden alfabético = orden cronológico).
+
+### Rotación automática por fecha
 
 ```gambas
-' Crear un archivo nuevo cada día
-logger.SetRotateByDate(True)
-' Resultado: aplicacion-2025-09-30.log, aplicacion-2025-10-01.log, etc.
+' Log4Gambas3 implementa rotación automática por fecha
+' NO necesitas activarla, está siempre activa
+' Formato automático: nombreapp-YYYY-MM-DD.log
+' Ejemplos:
+'   MiApp-2025-09-30.log
+'   MiApp-2025-10-01.log
+'   MiApp-2025-10-02.log
 ```
+
+**Ventajas de la rotación por fecha:**
+- Archivos organizados cronológicamente
+- Fácil identificar logs de un día específico
+- No necesitas configurar nada extra
+- Se combina con `SetMaxFiles()` para limitar la cantidad total
 
 ### Nivel mínimo de logging
 
@@ -122,15 +155,37 @@ logger.SetMinLevel(Log4Gambas3.LEVEL_INFO)
 
 ' En desarrollo: mostrar TODO incluyendo DEBUG
 logger.SetMinLevel(Log4Gambas3.LEVEL_DEBUG)
+
+' Solo advertencias y errores
+logger.SetMinLevel(Log4Gambas3.LEVEL_WARNING)
 ```
+
+**Jerarquía de niveles:**
+```
+LEVEL_DEBUG   (5) - Más detallado
+LEVEL_INFO    (4)
+LEVEL_WARNING (3)
+LEVEL_ERROR   (2)
+LEVEL_FATAL   (1) - Menos detallado
+LEVEL_NONE    (0) - Sin logging
+```
+
+Si configuras `LEVEL_WARNING`, solo se registrarán mensajes de tipo Warning, Error y Fatal. Los mensajes Debug e Info serán ignorados.
 
 ### Salida dual (consola + archivo)
 
 ```gambas
-' Lo mejor de ambos mundos
+' Lo mejor de ambos mundos: ver en tiempo real Y guardar historial
 logger.SetOutput(Log4Gambas3.OUTPUT_BOTH)
-logger.SetLogFile("/var/log/miapp/miapp.log")
+logger.SetLogFile("/tmp/miapp/logs")
+logger.SetAppName("MiApp")
+
+' Ahora cada mensaje aparecerá en:
+' 1. La consola (terminal)
+' 2. El archivo de log correspondiente
 ```
+
+**Ideal para:** Debugging, testing, o cuando necesitas monitorear en tiempo real pero también quieres guardar un registro permanente.
 
 ## 💡 Ejemplo completo de producción
 
@@ -143,12 +198,13 @@ Public Sub Main()
   ' Inicializar el logger
   logger = New Log4Gambas3
   
+  ' Configurar nombre de la aplicación
+  logger.SetAppName("MiApp")
+  
   ' Configuración para producción
   logger.SetOutput(Log4Gambas3.OUTPUT_FILE)
-  logger.SetLogFile(User.Home &/ ".miapp/logs/miapp.log")
-  logger.SetMaxFileSize(50 * 1024 * 1024)  ' 50MB máximo por archivo
-  logger.SetMaxFiles(10)                    ' Mantener 10 archivos históricos
-  logger.SetRotateByDate(True)              ' Archivo nuevo cada día
+  logger.SetLogFile(User.Home &/ ".miapp/logs")
+  logger.SetMaxFiles(10)                     ' Mantener 10 días de logs
   logger.SetMinLevel(Log4Gambas3.LEVEL_INFO) ' Solo INFO y superiores
   
   logger.Info("=== Aplicación MiApp v1.0 iniciada ===")
@@ -180,6 +236,13 @@ Public Sub InicializarAplicacion()
 End
 ```
 
+**Resultado:** Esta configuración creará archivos como:
+- `~/.miapp/logs/MiApp-2025-09-30.log`
+- `~/.miapp/logs/MiApp-2025-10-01.log`
+- etc.
+
+Y mantendrá solo los últimos 10 archivos automáticamente.
+
 ## 📊 Configuraciones recomendadas
 
 ### 🔧 Entorno de desarrollo
@@ -194,12 +257,12 @@ logger.SetMinLevel(Log4Gambas3.LEVEL_DEBUG)
 
 ```gambas
 logger.SetOutput(Log4Gambas3.OUTPUT_FILE)
-logger.SetLogFile("/var/log/miapp/miapp.log")
-logger.SetMaxFileSize(50 * 1024 * 1024)
+logger.SetLogFile("/var/log/miapp")
+logger.SetAppName("MiApp")
 logger.SetMaxFiles(20)
 logger.SetMinLevel(Log4Gambas3.LEVEL_INFO)
-logger.SetRotateByDate(True)
-' Ventaja: Logs organizados, sin llenar el disco
+' Ventaja: Logs organizados por fecha, sin llenar el disco
+' Archivos: MiApp-2025-09-30.log, MiApp-2025-10-01.log, etc.
 ```
 
 ### 🧪 Entorno de testing
@@ -215,11 +278,12 @@ logger.SetMinLevel(Log4Gambas3.LEVEL_DEBUG)
 
 ```gambas
 logger.SetOutput(Log4Gambas3.OUTPUT_FILE)
-logger.SetLogFile(User.Home &/ ".local/share/miapp/logs/miapp.log")
-logger.SetMaxFileSize(10 * 1024 * 1024)
+logger.SetLogFile(User.Home &/ ".local/share/miapp/logs")
+logger.SetAppName("MiApp")
 logger.SetMaxFiles(3)
 logger.SetMinLevel(Log4Gambas3.LEVEL_WARNING)
 ' Ventaja: No molesta al usuario, solo registra problemas
+' Archivos automáticos por fecha
 ```
 
 ## 📚 Referencia API
@@ -255,68 +319,106 @@ logger.Fatal(mensaje As String)    ' Nivel FATAL
 ### Métodos de configuración
 
 ```gambas
-' Configurar destino de salida
+' Configurar destino de salida (OUTPUT_NONE, OUTPUT_FILE, OUTPUT_CONSOLE, OUTPUT_BOTH)
 logger.SetOutput(modo As Integer)
 
-' Definir archivo de log
-logger.SetLogFile(ruta As String)
+' Definir directorio para archivos de log
+logger.SetLogFile(directorio As String)
 
-' Configurar rotación por tamaño (en bytes)
-logger.SetMaxFileSize(tamaño As Long)
+' Definir nombre de la aplicación (prefijo de archivos y aparece en cada línea)
+logger.SetAppName(nombre As String)
 
-' Configurar cantidad máxima de archivos
+' Configurar cantidad máxima de archivos a mantener
 logger.SetMaxFiles(cantidad As Integer)
 
-' Activar/desactivar rotación por fecha
-logger.SetRotateByDate(activar As Boolean)
+' Configurar tamaño máximo de archivo (funcionalidad en desarrollo)
+logger.SetMaxFileSize(tamaño As Long)
 
 ' Definir nivel mínimo a registrar
 logger.SetMinLevel(nivel As Integer)
-
-' Personalizar formato de línea (avanzado)
-logger.SetFormat(formato As String)
 ```
+
+**Nota importante sobre `SetLogFile()`:** Este método define el **directorio** donde se guardarán los logs, NO el nombre del archivo. Los archivos se crean automáticamente con el formato: `nombreapp-YYYY-MM-DD.log`
+
+### Métodos getter
+
+```gambas
+' Obtener configuración actual
+Dim nivel As Integer = logger.GetMinLevel()
+Dim salida As Integer = logger.GetOutput()
+Dim maxArchivos As Integer = logger.GetMaxFiles()
+Dim directorio As String = logger.GetLogFile()
+Dim nombre As String = logger.GetAppName()
+Dim tamañoMax As Long = logger.GetMaxFileSize()
+```
+## 🧪 Formulario de prueba
+
+El proyecto incluye un formulario de ejemplo (`FMain.form`) que demuestra todas las funcionalidades de Log4Gambas3.
+
+**Componentes requeridos para el formulario de prueba:**
+- gb.qt5 (o gb.gtk3)
+- gb.settings
+
+**Nota:** Si solo quieres usar la librería en tu proyecto, únicamente necesitas copiar el archivo `Log4Gambas3.class`. El formulario de prueba es opcional.
 
 ## 🎯 Buenas prácticas
 
 ### ✅ Hazlo así
 
 ```gambas
-' Contextualiza tus mensajes
+' 1. Configura el nombre de app al inicio
+logger.SetAppName("MiSuperApp")  ' Archivos: MiSuperApp-2025-09-30.log
+
+' 2. Contextualiza tus mensajes
 logger.Error("Error al cargar usuario ID " & userId & ": " & Error.Text)
 
-' Usa el nivel apropiado
+' 3. Usa el nivel apropiado según el entorno
 logger.Debug("Query SQL: " & sqlQuery)  ' Solo en desarrollo
 logger.Info("Usuario autenticado: " & username)  ' Eventos importantes
-logger.Error("Falló conexión: " & Error.Text)  ' Errores
+logger.Error("Falló conexión: " & Error.Text)  ' Errores recuperables
 
-' Incluye información para diagnóstico
+' 4. Incluye información útil para diagnóstico
 logger.Warning("Cache expirado después de " & timeout & " segundos")
+
+' 5. Usa Try/Catch con logging
+Try
+  ConexionBD()
+Catch
+  logger.Error("Error en BD: " & Error.Text & " en " & Error.Where)
+End Try
 ```
 
 ### ❌ Evita esto
 
 ```gambas
-' No registres en bucles intensivos
+' NO registres en bucles intensivos
 For i = 0 To 1000000
   logger.Debug("Procesando item " & i)  ' ¡MAL! Archivo gigante
 Next
 
-' No registres información sensible
+' NO registres información sensible
 logger.Info("Password: " & userPassword)  ' ¡NUNCA!
 logger.Debug("Token de sesión: " & token)  ' ¡PELIGROSO!
+logger.Info("Tarjeta de crédito: " & cardNumber)  ' ¡CRÍTICO!
 
-' No abuses del nivel FATAL
+' NO abuses del nivel FATAL
 logger.Fatal("El usuario cerró la ventana")  ' No es fatal
+logger.Fatal("Usuario escribió mal el password")  ' No es fatal
+
+' NO olvides configurar el nombre de app
+' Si no usas SetAppName(), todos tus logs se llamarán "app-2025-09-30.log"
 ```
 
 ### 💡 Tips profesionales
 
-1. **Inicializa temprano**: Configura el logger antes de cualquier otra operación
-2. **Un logger por aplicación**: Usa una instancia global, no múltiples loggers
-3. **Verifica permisos**: Asegúrate de tener permisos de escritura en la ruta de logs
-4. **Monitorea el tamaño**: Configura rotación para evitar logs de GB
-5. **Niveles en producción**: Usa INFO o WARNING en producción, DEBUG solo en desarrollo
+1. **Configura al inicio**: Llama a `SetAppName()` antes que cualquier otro método de configuración
+2. **Un logger global**: Declara `Public logger As Log4Gambas3` en Main para usarlo en toda la app
+3. **Ruta con permisos**: Asegúrate de tener permisos de escritura (usa User.Home para apps de usuario)
+4. **Limita archivos**: Usa `SetMaxFiles()` para que no se llene el disco (recomendado: 5-20 archivos)
+5. **Niveles por entorno**: 
+   - Desarrollo: `LEVEL_DEBUG`
+   - Testing: `LEVEL_INFO`
+   - Producción: `LEVEL_WARNING` o `LEVEL_INFO`
 
 ## 🏆 Casos de uso reales
 
@@ -347,14 +449,17 @@ Log4Gambas3 está siendo utilizado en:
 ## 🛣️ Roadmap
 
 - [x] Niveles de logging estándar
-- [x] Rotación por tamaño y fecha
+- [x] Rotación automática por fecha
+- [x] Rotación por cantidad de archivos
 - [x] Salida múltiple (consola + archivo)
+- [ ] Rotación por tamaño de archivo (completar implementación)
 - [ ] Tests automatizados
 - [ ] Formato JSON para logs estructurados
 - [ ] Envío a syslog
 - [ ] Compresión automática de logs antiguos
 - [ ] Filtros personalizables por módulo
 - [ ] Colores en salida de consola
+- [ ] Formato de mensaje personalizable
 - [ ] Integración con servicios de monitoreo externos
 
 ## 🤝 Contribuir

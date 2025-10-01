@@ -1,0 +1,61 @@
+' Gambas class file
+
+Private $log4Gambas As Log4Gambas3
+
+Public Sub Form_Open()
+
+  $log4Gambas = New Log4Gambas3
+  $log4Gambas.SetMinLevel(Log4Gambas3.LEVEL_DEBUG)
+  $log4Gambas.SetOutput(Log4Gambas3.OUT_CONSOLE)
+  $log4Gambas.SetMaxFiles(3)
+  $log4Gambas.SetMaxFileSize(2 * 1024 * 1024)
+  $log4Gambas.SetAppName = "Log4Gambas3_Pruebas"
+  $log4Gambas.SetLogFile = Application.Path
+
+  lblAppNombre.Text = Application.Name
+  lblRuta.Text = Application.Path
+  cmbNivel.List = $log4Gambas.LEVELS
+  cmbSalida.List = $log4Gambas.OUTPUT
+
+  cmbNivel.Index = $log4Gambas.LogLevel
+  cmbSalida.Index = $log4Gambas.LogOut
+  sbxCantidad.Value = $log4Gambas.MaxFiles
+  sbxTamano.Value = $log4Gambas.SizeLog
+
+End
+
+Public Sub btnSalir_Click()
+
+  Me.Close
+
+End
+
+Public Sub sbxCantidad_Change()
+
+  $log4Gambas.MaxFiles = sbxCantidad.Value
+
+End
+
+Public Sub cmbNivel_Click()
+
+  $log4Gambas.LogLevel = cmbNivel.Index
+
+End
+
+Public Sub cmbSalida_Click()
+
+  $log4Gambas.LogOut = cmbSalida.Index
+
+End
+
+Public Sub sbxTamano_Change()
+
+  $log4Gambas.SizeLog = sbxTamano.Value
+
+End
+
+Public Sub btnEnviar_Click()
+
+  $log4Gambas.Debug(txtTexto.Text)
+
+End

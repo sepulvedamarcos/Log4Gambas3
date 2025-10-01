@@ -1,0 +1,85 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,72,61)
+  Resizable = False
+  { Label1 Label
+    MoveScaled(2,10,18,3)
+    Text = ("Ruta de la aplicación")
+  }
+  { lblRuta Label
+    MoveScaled(2,13,60,3)
+  }
+  { btnSalir Button
+    MoveScaled(55,56,16,4)
+    Text = Shortcut(("Salir"), "S")
+  }
+  { Label2 Label
+    MoveScaled(2,1,28,3)
+    Text = ("Nombre y titulo de la aplicación")
+  }
+  { lblAppNombre Label
+    MoveScaled(2,5,69,3)
+  }
+  { Label3 Label
+    MoveScaled(2,17,13,3)
+    Text = ("Ruta Settings")
+  }
+  { lblRutaSettings Label
+    MoveScaled(2,21,59,3)
+  }
+  { tabPanel TabPanel
+    MoveScaled(1,27,70,27)
+    Count = 2
+    Index = 0
+    Text = ("Log4Gambas")
+    { Label4 Label
+      MoveScaled(3,2,17,3)
+      Text = ("Nivel de loggger")
+    }
+    { cmbNivel ComboBox
+      MoveScaled(3,6,20,4)
+      ReadOnly = True
+    }
+    { Label5 Label
+      MoveScaled(28,2,16,3)
+      Text = ("Salida de logger")
+    }
+    { cmbSalida ComboBox
+      MoveScaled(28,6,27,4)
+      ReadOnly = True
+    }
+    { Label6 Label
+      MoveScaled(3,12,19,3)
+      Text = ("Cantidad archivos log")
+    }
+    { Label7 Label
+      MoveScaled(28,12,19,3)
+      Text = ("Tamaño archivo log")
+    }
+    { sbxTamano SpinBox
+      MoveScaled(28,16,9,4)
+      MaxValue = 50
+    }
+    { sbxCantidad SpinBox
+      MoveScaled(3,16,9,4)
+      MaxValue = 30
+    }
+    Index = 1
+    Text = ("Prueba envio")
+    { txtTexto TextBox
+      MoveScaled(2,7,66,4)
+      Text = ("Texto de prueba")
+      MaxLength = 50
+    }
+    { Label8 Label
+      MoveScaled(2,2,33,3)
+      Text = ("Texto de prueba de salida de log")
+    }
+    { btnEnviar Button
+      MoveScaled(40,16,28,4)
+      Text = ("Enviar a salida de log")
+    }
+    Index = 0
+  }
+}
