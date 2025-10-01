@@ -16,12 +16,12 @@ Export
 Private $logLevel As Integer = 0
 Private $logOutput As Integer = 0
 Private $maxFiles As Integer = 5
-Private $maxFileSize As Long = 5242880  ' 5MB por defecto
+Private $maxFileSize As Long = 5 * 1020 * 1024  ' 5MB por defecto
 Private $pathFiles As String = ""
 Private $appName As String = "app"
 
-Static Public LEVELS As String[] = ["None", "Fatal", "Error", "Warning", "Info", "Debug"] ''Arreglo con todas las opciones de nivel
-Static Public OUTPUT As String[] = ["None", "File", "Console", "Both"]                        ''Arreglo con todas las opciones de salida
+Private $levels As String[] = ["None", "Fatal", "Error", "Warning", "Info", "Debug"] ''Arreglo con todas las opciones de nivel
+Private $outputs As String[] = ["None", "File", "Console", "Both"]                        ''Arreglo con todas las opciones de salida
 
 Public Enum LEVEL_NONE = 0                        ''Enum para definir nivel salida None
 Public Enum LEVEL_FATAL = 1                       ''Enum para definir nivel salida Fatal
@@ -34,6 +34,9 @@ Public Enum OUTPUT_NONE = 0                       ''Enum para sin salida
 Public Enum OUTPUT_FILE = 1                       ''Enum para escribir en archivo
 Public Enum OUTPUT_CONSOLE = 2                    ''Enum para salida por consola
 Public Enum OUTPUT_BOTH = 3                       ''Enum para salida dual (archivo + consola)
+
+Property Read Levels As String[]                  ''Acceso al arreglo con descriptores de nivel
+Property Read Outputs As String[]                 ''Acceso al arrelgo con descriptores de salida
 
 ' =============================================
 ' === Métodos públicos de envío de mensajes ===
@@ -75,7 +78,8 @@ Private Sub SendMessage(typeMess As Integer, m As String)
 
   ' Formatear el mensaje con timestamp, nombre de app, nivel y contenido
   messa = "[" & Format(Now(), "dd-mm-yyyy hh:nn:ss") & "]"
-  messa &= "[" & LEVELS[typeMess] & "]"
+  messa = "[" & $appName & "]"
+  messa &= "[" & $levels[typeMess] & "]"
   messa &= " " & m
 
   ' Verificar si el nivel del mensaje cumple con el nivel mínimo configurado
@@ -114,7 +118,7 @@ Private Sub WriteToFile(messa As String)
   CheckFileRotator()
 
   ' Generar nombre de archivo con fecha
-  fileName = $pathFiles &/ Format(Date(Now), "yyyy-mm-dd") & ".log"
+  fileName = $pathFiles &/ $appName & "-" & Format(Date(Now), "yyyy-mm-dd") & ".log "
 
   ' Abrir archivo (crear si no existe, o agregar al final)
   If Not Exist(fileName) Then
@@ -267,5 +271,17 @@ Public Sub SetAppName(name As String)        ''Define el nombre de la aplicació
   Else
     $appName = "app"
   Endif
+
+End
+
+Private Function Levels_Read() As String[]
+
+  Return $levels
+
+End
+
+Private Function Outputs_Read() As String[]
+
+  Return $outputs
 
 End

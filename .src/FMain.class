@@ -6,25 +6,31 @@ Public Sub Form_Open()
 
   $log4Gambas = New Log4Gambas3
   $log4Gambas.SetMinLevel(Log4Gambas3.LEVEL_DEBUG)
-  $log4Gambas.SetOutput(Log4Gambas3.OUT_CONSOLE)
+  $log4Gambas.SetOutput(Log4Gambas3.OUTPUT_CONSOLE)
   $log4Gambas.SetMaxFiles(3)
   $log4Gambas.SetMaxFileSize(2 * 1024 * 1024)
-  $log4Gambas.SetAppName = "Log4Gambas3_Pruebas"
-  $log4Gambas.SetLogFile = Application.Path
+  $log4Gambas.SetAppName("Log4Gambas3_Pruebas")
+  $log4Gambas.SetLogFile(Application.Path)
 
   lblAppNombre.Text = Application.Name
   lblRuta.Text = Application.Path
-  cmbNivel.List = $log4Gambas.LEVELS
-  cmbSalida.List = $log4Gambas.OUTPUT
+  cmbNivel.List = $log4Gambas.Levels
+  cmbSalida.List = $log4Gambas.Outputs
 
-  cmbNivel.Index = $log4Gambas.LogLevel
-  cmbSalida.Index = $log4Gambas.LogOut
-  sbxCantidad.Value = $log4Gambas.MaxFiles
-  sbxTamano.Value = $log4Gambas.SizeLog
+  cmbNivel.Index = Settings["Log4Gambas/Level", $log4Gambas.GetMinLevel()]
+  cmbSalida.Index = Settings["Log4Gambas/Output", $log4Gambas.GetOutput()]
+  sbxCantidad.Value = Settings["Log4Gambas/MaxFiles", $log4Gambas.GetMaxFiles()]
+  sbxTamano.Value = Settings["Log4Gambas/Size", $log4Gambas.GetMaxFileSize()]
 
 End
 
 Public Sub btnSalir_Click()
+
+  Settings["Log4Gambas/Level"] = cmbNivel.Index
+  Settings["Log4Gambas/Output"] = cmbSalida.Index
+  Settings["Log4Gambas/MaxFiles"] = sbxCantidad.Value
+  Settings["Log4Gambas/Size"] = sbxTamano.Value
+  Settings.Save()
 
   Me.Close
 
@@ -32,25 +38,33 @@ End
 
 Public Sub sbxCantidad_Change()
 
-  $log4Gambas.MaxFiles = sbxCantidad.Value
+  Settings["Log4Gambas/MaxFiles"] = sbxCantidad.Value
+  Settings.Save()
+  $log4Gambas.SetMaxFiles(sbxCantidad.Value)
 
 End
 
 Public Sub cmbNivel_Click()
 
-  $log4Gambas.LogLevel = cmbNivel.Index
+  Settings["Log4Gambas/Level"] = cmbNivel.Index
+  Settings.Save()
+  $log4Gambas.SetMinLevel(cmbNivel.Index)
 
 End
 
 Public Sub cmbSalida_Click()
 
-  $log4Gambas.LogOut = cmbSalida.Index
+  Settings["Log4Gambas/Output"] = cmbSalida.Index
+  Settings.Save
+  $log4Gambas.SetOutput(cmbSalida.Index)
 
 End
 
 Public Sub sbxTamano_Change()
 
-  $log4Gambas.SizeLog = sbxTamano.Value
+  Settings["Log4Gambas/Size"] = sbxTamano.Value
+  Settings.Save()
+  $log4Gambas.SetMaxFileSize(sbxTamano.Value)
 
 End
 
