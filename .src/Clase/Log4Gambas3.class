@@ -13,8 +13,8 @@ Export
 '
 '======================================================================================================
 '
-Private $logLevel As Integer = 0
-Private $logOutput As Integer = 0
+Private $logLevel As Integer = 5
+Private $logOutput As Integer = 2
 Private $maxFiles As Integer = 5
 Private $maxFileSize As Long = 5 * 1020 * 1024  ' 5MB por defecto
 Private $pathFiles As String = ""

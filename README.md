@@ -447,12 +447,9 @@ Log4Gambas3 está siendo utilizado en:
 - [x] Niveles de logging estándar
 - [x] Rotación automática por fecha
 - [x] Rotación por cantidad de archivos
-- [x] Salida múltiple (consola + archivo)
-- [ ] Rotación por tamaño de archivo (completar implementación)
-- [ ] Tests automatizados
-- [ ] Formato JSON para logs estructurados
+- [ ] Salida múltiple (consola + archivo)
+- [x] Rotación por tamaño de archivo (completar implementación)
 - [ ] Envío a syslog
-- [ ] Compresión automática de logs antiguos
 - [ ] Filtros personalizables por módulo
 - [ ] Colores en salida de consola
 - [ ] Formato de mensaje personalizable
