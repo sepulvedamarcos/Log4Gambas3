@@ -497,14 +497,8 @@ GitHub: [@sepulvedamarcos](https://github.com/sepulvedamarcos)
 
 ---
 
-<div align="center">
+**¿Te resultó útil Log4Gambas3?**  ⭐ Dale una estrella al repositorio
 
-**¿Te resultó útil Log4Gambas3?**  
-⭐ Dale una estrella al repositorio
-
-**¿Quieres apoyar el desarrollo?**  
-☕ [Invítame un café](https://ko-fi.com/sepulvedamarcos)
+**¿Quieres apoyar el desarrollo?** ☕ [Invítame un café](https://ko-fi.com/sepulvedamarcos)
 
 *Proyecto creado con fines educativos y de aprendizaje*
-
-</div>
