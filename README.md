@@ -454,6 +454,7 @@ Log4Gambas3 está siendo utilizado en:
 - [ ] Colores en salida de consola
 - [ ] Formato de mensaje personalizable
 - [ ] Integración con servicios de monitoreo externos
+- [ ] Traducir los textos a ingles al menos
 
 ## 🤝 Contribuir
 
@@ -486,7 +487,6 @@ GitHub: [@sepulvedamarcos](https://github.com/sepulvedamarcos)
 ## 🙏 Agradecimientos
 
 - Comunidad de **Gambas3** por crear un entorno fantástico
-- Inspiración en **Log4j**, **Winston** y otras librerías clásicas
 - Todos los que reportan bugs y sugieren mejoras
 
 ## 📖 Recursos adicionales
