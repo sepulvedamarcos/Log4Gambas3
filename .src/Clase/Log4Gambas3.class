@@ -16,7 +16,7 @@ Export
 Private $logLevel As Integer = 5
 Private $logOutput As Integer = 2
 Private $maxFiles As Integer = 5
-Private $maxFileSize As Long = 5 * 1020 * 1024  ' 5MB por defecto
+Private $maxFileSize As Long = 5 * 1024 * 1024  ' 5MB por defecto
 Private $pathFiles As String = ""
 Private $appName As String = "app"
 
@@ -74,13 +74,13 @@ End
 
 Private Sub SendMessage(typeMess As Integer, m As String)
 
-  Dim messa As String
+  Dim messageText As String
 
   ' Formatear el mensaje con timestamp, nombre de app, nivel y contenido
-  messa = "[" & Format(Now(), "dd-mm-yyyy hh:nn:ss") & "]"
-  messa = "[" & $appName & "]"
-  messa &= "[" & $levels[typeMess] & "]"
-  messa &= " " & m
+  messageText = "[" & Format(Now(), "dd-mm-yyyy hh:nn:ss") & "]"
+  messageText &= "[" & $appName & "]"
+  messageText &= "[" & $levels[typeMess] & "]"
+  messageText &= " " & m
 
   ' Verificar si el nivel del mensaje cumple con el nivel mínimo configurado
   If $logLevel >= typeMess Then
@@ -88,14 +88,14 @@ Private Sub SendMessage(typeMess As Integer, m As String)
     Select Case $logOutput
 
       Case OUTPUT_CONSOLE
-        Print messa
+        Print messageText
 
       Case OUTPUT_FILE
-        WriteToFile(messa)
+        WriteToFile(messageText)
 
       Case OUTPUT_BOTH
-        Print messa
-        WriteToFile(messa)
+        Print messageText
+        WriteToFile(messageText)
 
       Case OUTPUT_NONE
         ' No hacer nada
@@ -118,7 +118,7 @@ Private Sub WriteToFile(messa As String)
   CheckFileRotator()
 
   ' Generar nombre de archivo con fecha
-  fileName = $pathFiles &/ $appName & "-" & Format(Date(Now), "yyyy-mm-dd") & ".log "
+  fileName = GetCurrentLogFile()
 
   ' Abrir archivo (crear si no existe, o agregar al final)
   If Not Exist(fileName) Then
@@ -148,7 +148,7 @@ Private Sub CheckFileRotator()
   Endif
 
   ' Obtener lista de archivos .log de esta aplicación
-  filesLog = Dir($pathFiles, "*.log")
+  filesLog = Dir($pathFiles, $appName & "-*.log")
 
   ' Si hay más archivos que el máximo permitido, eliminar los más antiguos
   If filesLog.Count > $maxFiles Then
@@ -167,6 +167,12 @@ Private Sub CheckFileRotator()
 
 Catch
   Print "Log4Gambas3 Error en rotación: " & Error.Text
+
+End
+
+Private Function GetCurrentLogFile() As String
+
+  Return $pathFiles &/ $appName & "-" & Format(Date(Now), "yyyy-mm-dd") & ".log"
 
 End
 
