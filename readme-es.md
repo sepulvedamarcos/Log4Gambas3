@@ -1,4 +1,5 @@
 # Log4Gambas3 — README técnico
+[English](./README.md)
 
 ## Resumen
 
