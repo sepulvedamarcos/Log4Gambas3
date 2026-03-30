@@ -1,109 +1,92 @@
 # Log4Gambas3 — README técnico
 [English](./README.md)
 
-## Resumen
+Librería simple de logging para Gambas3.
 
-Log4Gambas3 es una librería pequeña de logging para Gambas3 empaquetada dentro de un proyecto que además incluye una aplicación demo con interfaz gráfica.
+*Una forma práctica de agregar trazas y archivos de log a tus aplicaciones sin complicarte.*
 
-La fuente principal exportable está en:
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Made with Gambas](https://img.shields.io/badge/Made%20with-Gambas-green.svg)](http://gambas.sourceforge.net/)
+[![Platform](https://img.shields.io/badge/Platform-Linux-orange.svg)](https://www.linux.org/)
 
-- `.src/Clase/Log4Gambas3.class`
+## ¿Qué es Log4Gambas3?
 
-La demo está en:
+**Log4Gambas3** es una librería pequeña para registrar eventos, errores y mensajes de depuración en aplicaciones hechas con Gambas3.
 
-- `.src/FMain.class`
-- `.src/FMain.form`
+Permite escribir logs en consola, en archivos o en ambas salidas al mismo tiempo, con una configuración simple y directa.  
+El proyecto también incluye una aplicación demo para probar su funcionamiento.
 
-## Estructura del proyecto
+## ¿Por qué usarla?
 
-```text
-.src/Clase/Log4Gambas3.class   Clase principal exportable
-.src/FMain.class               Controlador del formulario demo
-.src/FMain.form                Layout de la UI demo
-.project                       Metadata del proyecto Gambas
-.component                     Metadata del componente
-.gambas/                       Artefactos generados/binarios
-.desc/                         Descriptores generados
-Iconos/                        Recursos visuales
+Cuando una aplicación empieza a crecer, tener trazas claras ayuda a entender qué pasó, detectar errores y seguir mejor el flujo de ejecución.
+
+Log4Gambas3 busca resolver eso con una propuesta simple:
+
+- niveles de log fáciles de usar,
+- salida flexible,
+- archivos organizados por fecha,
+- y rotación automática para no acumular logs sin control.
+
+## ¿Qué ofrece?
+
+- **Niveles de log**: Fatal, Error, Warning, Info y Debug.
+- **Salida flexible**: consola, archivo o ambas.
+- **Archivos por fecha**: los logs se organizan automáticamente.
+- **Rotación de archivos**: controla cuántos logs conservar.
+- **Rotación por tamaño**: crea archivos nuevos cuando se supera el tamaño definido.
+- **Demo incluida**: para probar la librería fácilmente.
+
+## Casos de uso
+
+Log4Gambas3 puede servirte si estás haciendo:
+
+- aplicaciones de escritorio en Gambas3,
+- utilidades internas,
+- herramientas de administración,
+- sistemas que necesiten trazabilidad básica,
+- proyectos donde quieras depurar sin montar una solución compleja.
+
+## Ejemplo de uso
+
+```gambas
+Dim log As New Log4Gambas3
+
+log.SetAppName("MiAplicacion")
+log.SetLogFile(User.Home &/ "logs")
+log.SetMinLevel(Log4Gambas3.LEVEL_INFO)
+log.SetOutput(Log4Gambas3.OUTPUT_BOTH)
+log.SetMaxFiles(5)
+log.SetMaxFileSize(1024 * 1024)
+
+log.Info("Aplicación iniciada")
+log.Warning("Esta es una advertencia")
+log.Error("Ocurrió un error de prueba")
 ```
 
-## Arquitectura descubierta
+## Demo incluida
 
-### 1. Capa librería
+El proyecto incluye una interfaz de prueba desde donde puedes:
 
-La clase `Log4Gambas3` concentra:
+- seleccionar el nivel de log,
+- elegir el tipo de salida,
+- definir cantidad máxima de archivos,
+- ajustar el tamaño máximo,
+- y enviar mensajes de prueba.
 
-- niveles de logging
-- modos de salida
-- getters/setters de configuración
-- formateo del mensaje
-- escritura a archivo
-- rotación por cantidad de archivos
+Es una forma rápida de ver cómo funciona la librería antes de integrarla en otro proyecto.
 
-### 2. Capa demo/aplicación
+## Estado del proyecto
 
-`FMain` funciona como banco de pruebas manual para:
+Actualmente la librería permite:
 
-- elegir nivel
-- elegir salida
-- definir cantidad máxima de archivos
-- definir tamaño máximo
-- enviar texto de prueba
+- escribir mensajes con fecha, aplicación y nivel,
+- generar archivos diarios de log,
+- rotar archivos por cantidad,
+- y rotar por tamaño cuando el archivo supera el límite configurado.
 
-Además guarda preferencias usando `gb.settings`.
+## Licencia
 
-## Estado actual
-
-- el nombre del archivo rota por fecha
-- la rotación por cantidad de archivos está implementada
-- la salida a consola, archivo o ambas está implementada
-- `SetMaxFileSize()` ya aplica rotación real por tamaño
-- cuando un archivo diario supera el tamaño configurado, la librería crea archivos con sufijos para ese mismo día
-
-## Notas importantes sobre Gambas
-
-- los archivos `.class` y `.form` son **texto plano**
-- los `.gambas` y el contenido bajo `.gambas/` son artefactos generados/binarios
-- Gambas es **case-insensitive**
-- los formularios conviene tocarlos lo mínimo posible y mover lógica a clases o módulos cuando se pueda
-
-## Recomendaciones de desarrollo
-
-- tomar `.src/Clase/Log4Gambas3.class` como fuente real de la librería
-- mantener separada la lógica reutilizable de la lógica de demo
-- documentar con claridad qué archivos son fuente y cuáles son generados
-- evitar convenciones de nombres que dependan de mayúsculas/minúsculas
-- agregar una guía simple de validación manual para probar la rotación de logs
-
-## Documentos relacionados
-
-- `README.md` — versión técnica en inglés
-- `spec.md` — especificación y hallazgos de arquitectura
-- `agent.md` — guía de trabajo para agentes
-- `tasks.md` — mejoras detectadas
-
-## Verificación manual
-
-Para probar manualmente la rotación actual de logs:
-
-1. Abre el proyecto en Gambas3.
-2. Configura el formulario demo para usar salida a archivo.
-3. Define un tamaño máximo muy pequeño.
-4. Envía varios mensajes de prueba desde la demo.
-5. Verifica que:
-   - se creen archivos diarios en la ruta configurada
-   - el archivo activo rote a archivos con sufijo cuando supera el tamaño máximo
-   - se eliminen archivos antiguos cuando se supera la cantidad máxima configurada
-
-## Contribuir
-
-Las contribuciones son bienvenidas, ya sea reportando bugs, proponiendo mejoras o enviando código.
-
-1. Haz un fork del repositorio
-2. Crea una rama (`git checkout -b feature/mi-cambio`)
-3. Haz commit de tus cambios
-4. Sube tu rama
-5. Abre un Pull Request
+Este proyecto se distribuye bajo licencia GPL v3.
 
 ## Contacto
 
@@ -115,10 +98,10 @@ Las contribuciones son bienvenidas, ya sea reportando bugs, proponiendo mejoras 
     <img src="https://img.shields.io/badge/Email-sepulvedamarcos%40gmail.com-red?logo=gmail&logoColor=white" />
   </a>
   <a href="https://ko-fi.com/sepulvedamarcos">
-    <img src="https://img.shields.io/badge/Ko--fi-Apoyar%20con%20un%20caf%C3%A9-ff5e5b?logo=kofi&logoColor=white" />
+    <img src="https://img.shields.io/badge/Ko--fi-Invítame%20un%20café-ff5e5b?logo=kofi&logoColor=white" />
   </a>
 </p>
 
 ---
 
-Si te gusta, considera darle una estrella al repositorio.
+Si te gustó el proyecto, considera darle una estrella al repositorio.
