@@ -19,7 +19,7 @@
 
 - [ ] Add an explicit packaging/install workflow for producing the `.gambas` library artifact.
 - [ ] Document release/versioning strategy.
-- [ ] Add a small “how to test manually” section for the demo form.
+- [x] Add a small “how to test manually” section for the demo form.
 - [ ] Add examples for console-only, file-only and both outputs.
 
 ## Gambas-specific housekeeping

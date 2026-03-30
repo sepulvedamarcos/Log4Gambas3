@@ -80,3 +80,16 @@ It persists some UI settings through `gb.settings`.
 - `spec.md` — architecture and technical findings
 - `agent.md` — agent operating guide
 - `tasks.md` — prioritized improvements
+
+## Manual verification
+
+To verify the current log rotation behavior manually:
+
+1. Open the project in Gambas3.
+2. Configure the demo form to use file output.
+3. Set a very small max file size.
+4. Send multiple test messages from the demo.
+5. Confirm that:
+   - daily log files are created in the configured path
+   - the active file rolls over to suffixed files when size is exceeded
+   - old files are removed when the configured max-file count is exceeded

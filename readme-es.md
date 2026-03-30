@@ -80,3 +80,16 @@ Además guarda preferencias usando `gb.settings`.
 - `spec.md` — especificación y hallazgos de arquitectura
 - `agent.md` — guía de trabajo para agentes
 - `tasks.md` — mejoras detectadas
+
+## Verificación manual
+
+Para probar manualmente la rotación actual de logs:
+
+1. Abre el proyecto en Gambas3.
+2. Configura el formulario demo para usar salida a archivo.
+3. Define un tamaño máximo muy pequeño.
+4. Envía varios mensajes de prueba desde la demo.
+5. Verifica que:
+   - se creen archivos diarios en la ruta configurada
+   - el archivo activo rote a archivos con sufijo cuando supera el tamaño máximo
+   - se eliminen archivos antiguos cuando se supera la cantidad máxima configurada
