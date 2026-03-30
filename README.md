@@ -1,5 +1,4 @@
 # Log4Gambas3
-
 [Español](./readme-es.md)
 
 Simple logging library for Gambas3.

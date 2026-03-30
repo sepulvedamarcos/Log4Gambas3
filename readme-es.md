@@ -1,5 +1,4 @@
-# Log4Gambas3
-
+# Log4Gambas3 — README técnico
 [English](./README.md)
 
 Librería simple de logging para Gambas3.
