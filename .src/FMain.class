@@ -1,6 +1,7 @@
 ' Gambas class file
 
 Private $log4Gambas As Log4Gambas3
+Private $statusTimer As Timer
 
 Public Sub Form_Open()
 
@@ -21,6 +22,11 @@ Public Sub Form_Open()
   cmbSalida.Index = Settings["Log4Gambas/Output", $log4Gambas.GetOutput()]
   sbxCantidad.Value = Settings["Log4Gambas/MaxFiles", $log4Gambas.GetMaxFiles()]
   sbxTamano.Value = Settings["Log4Gambas/Size", $log4Gambas.GetMaxFileSize()]
+  LabelStatusBar.Text = ""
+
+  $statusTimer = New Timer As "StatusTimer"
+  $statusTimer.Delay = 5000
+  $statusTimer.Enabled = False
 
 End
 
@@ -71,5 +77,49 @@ End
 Public Sub btnEnviar_Click()
 
   $log4Gambas.Debug(txtTexto.Text)
+
+End
+
+Public Sub btnSalir_Enter()
+
+  ShowStatus("Cerrar la aplicación", 0)
+
+End
+
+Public Sub btnSalir_Leave()
+
+  ShowStatus("", 0)
+
+End
+
+Public Sub btnEnviar_Enter()
+
+  ShowStatus("Enviar texto de prueba al log", 0)
+
+End
+
+Public Sub btnEnviar_Leave()
+
+  ShowStatus("", 0)
+
+End
+
+Public Sub ShowStatus(message As String, Optional keepMs As Integer = 5000)
+
+  LabelStatusBar.Text = message
+
+  If keepMs > 0 Then
+    $statusTimer.Delay = keepMs
+    $statusTimer.Enabled = True
+  Else
+    $statusTimer.Enabled = False
+  Endif
+
+End
+
+Public Sub StatusTimer_Timer()
+
+  LabelStatusBar.Text = ""
+  $statusTimer.Enabled = False
 
 End

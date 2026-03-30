@@ -1,6 +1,6 @@
 [Component]
 Key=Log4Gambas3
-Version=3.0.3
+Version=3.0.5
 State=1
 Authors=Marcos Sepulveda
 Needs=Form

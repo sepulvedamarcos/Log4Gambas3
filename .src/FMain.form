@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,72,61)
+  MoveScaled(0,0,72,66)
   Resizable = False
   { Label1 Label
     MoveScaled(2,10,18,3)
@@ -11,7 +11,7 @@
     MoveScaled(2,13,60,3)
   }
   { btnSalir Button
-    MoveScaled(55,56,16,4)
+    MoveScaled(55,60,16,4)
     Text = Shortcut(("Salir"), "S")
   }
   { Label2 Label
@@ -81,5 +81,9 @@
       Text = ("Enviar a salida de log")
     }
     Index = 0
+  }
+  { LabelStatusBar Label
+    MoveScaled(2,56,69,3)
+    Text = ("")
   }
 }
