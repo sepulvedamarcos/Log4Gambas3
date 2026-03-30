@@ -72,18 +72,18 @@ Public Sub Fatal(m As String) ''Errores críticos que impiden continuar
 
 End
 
-Private Sub SendMessage(typeMess As Integer, m As String)
+Private Sub SendMessage(messageLevel As Integer, message As String)
 
   Dim messageText As String
 
   ' Formatear el mensaje con timestamp, nombre de app, nivel y contenido
   messageText = "[" & Format(Now(), "dd-mm-yyyy hh:nn:ss") & "]"
   messageText &= "[" & $appName & "]"
-  messageText &= "[" & $levels[typeMess] & "]"
-  messageText &= " " & m
+  messageText &= "[" & $levels[messageLevel] & "]"
+  messageText &= " " & message
 
   ' Verificar si el nivel del mensaje cumple con el nivel mínimo configurado
-  If $logLevel >= typeMess Then
+  If $logLevel >= messageLevel Then
 
     Select Case $logOutput
 
@@ -109,27 +109,27 @@ Catch
 
 End
 
-Private Sub WriteToFile(messa As String)
+Private Sub WriteToFile(messageText As String)
 
-  Dim arch As File
+  Dim logFile As File
   Dim fileName As String
 
   ' Verificar rotación de archivos
   CheckFileRotator()
 
   ' Generar nombre de archivo activo según fecha y tamaño
-  fileName = GetLogFileForMessage(messa)
+  fileName = GetLogFileForMessage(messageText)
 
   ' Abrir archivo (crear si no existe, o agregar al final)
   If Not Exist(fileName) Then
-    arch = Open fileName For Write Create
+    logFile = Open fileName For Write Create
   Else
-    arch = Open fileName For Append
+    logFile = Open fileName For Append
   Endif
 
   ' Escribir mensaje
-  Print #arch, messa
-  Close #arch
+  Print #logFile, messageText
+  Close #logFile
 
   ' Verificar nuevamente por si se creó un nuevo archivo
   CheckFileRotator()
@@ -142,7 +142,7 @@ End
 Private Sub CheckFileRotator()
 
   Dim filesLog As New String[]
-  Dim olderFile As String
+  Dim oldestFileName As String
 
   ' Crear directorio si no existe
   If Not IsDir($pathFiles) Then
@@ -154,11 +154,11 @@ Private Sub CheckFileRotator()
 
   ' Si hay más archivos que el máximo permitido, eliminar los más antiguos
   While filesLog.Count > $maxFiles
-    olderFile = GetOldestLogFile(filesLog)
-    If olderFile <> "" And Exist($pathFiles &/ olderFile) Then
-      Try Kill $pathFiles &/ olderFile
+    oldestFileName = GetOldestLogFile(filesLog)
+    If oldestFileName <> "" And Exist($pathFiles &/ oldestFileName) Then
+      Try Kill $pathFiles &/ oldestFileName
       If Error Then
-        Print "Log4Gambas3: No se pudo eliminar " & ($pathFiles &/ olderFile)
+        Print "Log4Gambas3: No se pudo eliminar " & ($pathFiles &/ oldestFileName)
         Exit
       Endif
     Else
