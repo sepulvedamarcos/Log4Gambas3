@@ -94,3 +94,28 @@ To verify the current log rotation behavior manually:
    - daily log files are created in the configured path
    - the active file rolls over to suffixed files when size is exceeded
    - old files are removed when the configured max-file count is exceeded
+## Contributing
+
+Contributions are welcome, whether you are reporting bugs, suggesting improvements, or sending code.
+
+1. Fork the repository
+2. Create a branch (`git checkout -b feature/my-change`)
+3. Commit your changes
+4. Push your branch
+5. Open a Pull Request
+
+## Contact
+
+<p align="center">
+  <a href="https://www.linkedin.com/in/sepulvedamarcos">
+    <img src="https://img.shields.io/badge/LinkedIn-Marcos%20Sep%C3%BAlveda-blue?logo=linkedin&logoColor=white" />
+  </a>
+  <a href="mailto:sepulvedamarcos@gmail.com">
+    <img src="https://img.shields.io/badge/Email-sepulvedamarcos%40gmail.com-red?logo=gmail&logoColor=white" />
+  </a>
+  <a href="https://ko-fi.com/sepulvedamarcos">
+    <img src="https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-ff5e5b?logo=kofi&logoColor=white" />
+  </a>
+</p>
+
+---
