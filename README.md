@@ -1,95 +1,108 @@
 # Log4Gambas3
 
-## Overview
+[Español](./readme-es.md)
 
-Log4Gambas3 is a small Gambas3 logging library packaged as a project that also includes a demo GUI application.
+Simple logging library for Gambas3.
 
-Its main exported source lives in:
+*A practical way to add traces and log files to your applications without overcomplicating things.*
 
-- `.src/Clase/Log4Gambas3.class`
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Made with Gambas](https://img.shields.io/badge/Made%20with-Gambas-green.svg)](http://gambas.sourceforge.net/)
+[![Platform](https://img.shields.io/badge/Platform-Linux-orange.svg)](https://www.linux.org/)
 
-The project also includes a form-based demo:
+## What is Log4Gambas3?
 
-- `.src/FMain.class`
-- `.src/FMain.form`
+**Log4Gambas3** is a small library for recording events, errors, and debug messages in applications built with Gambas3.
 
-## Project structure
+It can write logs to the console, to files, or to both at the same time with a simple and direct configuration.  
+The project also includes a demo application so you can quickly test how it works.
 
-```text
-.src/Clase/Log4Gambas3.class   Main exported logging class
-.src/FMain.class               Demo form controller
-.src/FMain.form                Demo UI layout
-.project                       Gambas project metadata
-.component                     Component metadata
-.gambas/                       Generated/binary artifacts
-.desc/                         Generated descriptors/call metadata
-Iconos/                        Project icons
+## Why use it?
+
+As an application grows, having clear traces helps you understand what happened, detect errors faster, and follow the execution flow more easily.
+
+Log4Gambas3 is built to solve that in a simple way:
+
+- easy-to-use log levels,
+- flexible output options,
+- date-based log files,
+- and automatic rotation to avoid uncontrolled log accumulation.
+
+## What does it offer?
+
+- **Log levels**: Fatal, Error, Warning, Info, and Debug.
+- **Flexible output**: console, file, or both.
+- **Date-based files**: logs are organized automatically.
+- **File rotation**: control how many log files to keep.
+- **Size-based rotation**: create new files when the configured size is exceeded.
+- **Included demo**: test the library quickly.
+
+## Use cases
+
+Log4Gambas3 can be useful for:
+
+- Gambas3 desktop applications,
+- internal utilities,
+- administration tools,
+- systems that need basic traceability,
+- projects where you want debugging support without a complex setup.
+
+## Usage example
+
+```gambas
+Dim log As New Log4Gambas3
+
+log.SetAppName("MyApplication")
+log.SetLogFile(User.Home &/ "logs")
+log.SetMinLevel(Log4Gambas3.LEVEL_INFO)
+log.SetOutput(Log4Gambas3.OUTPUT_BOTH)
+log.SetMaxFiles(5)
+log.SetMaxFileSize(1024 * 1024)
+
+log.Info("Application started")
+log.Warning("This is a warning")
+log.Error("A test error occurred")
 ```
 
-## Architecture discovered
+## Included demo
 
-### 1. Library layer
+The project includes a test interface where you can:
 
-`Log4Gambas3.class` exposes:
+- choose the log level,
+- select the output type,
+- define the maximum number of files,
+- adjust the maximum file size,
+- and send test messages.
 
-- log levels
-- output modes
-- getters/setters for configuration
-- message formatting
-- file writing
-- file rotation by count
+It is a quick way to see how the library behaves before integrating it into another project.
 
-### 2. Demo/application layer
+## Project status
 
-`FMain` is a manual test harness for:
+The library currently supports:
 
-- level selection
-- output selection
-- max files
-- max file size
-- test message emission
+- writing messages with date, application name, and level,
+- generating daily log files,
+- rotating files by count,
+- and rotating by size when a file exceeds the configured limit.
 
-It persists some UI settings through `gb.settings`.
+## License
 
-## Current behavior
+This project is distributed under the GPL v3 license.
 
-- date-based file naming is implemented
-- file count rotation is implemented
-- console/file/both outputs are implemented
-- max file size rotation is implemented
-- when a daily log file exceeds the configured size, the library creates suffixed files for the same day
+## Contact
 
-## Gambas-specific notes
+<p align="center">
+  <a href="https://www.linkedin.com/in/sepulvedamarcos">
+    <img src="https://img.shields.io/badge/LinkedIn-Marcos%20Sep%C3%BAlveda-blue?logo=linkedin&logoColor=white" />
+  </a>
+  <a href="mailto:sepulvedamarcos@gmail.com">
+    <img src="https://img.shields.io/badge/Email-sepulvedamarcos%40gmail.com-red?logo=gmail&logoColor=white" />
+  </a>
+  <a href="https://ko-fi.com/sepulvedamarcos">
+    <img src="https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-ff5e5b?logo=kofi&logoColor=white" />
+  </a>
+</p>
 
-- `.class` and `.form` files are plain text source files
-- `.gambas` files and content under `.gambas/` are generated/binary artifacts
-- Gambas is case-insensitive, so naming collisions are easier to introduce than in many other languages
-- form files should be changed carefully; moving logic out of forms is usually safer than deep UI edits
+---
 
-## Development recommendations
-
-- treat `.src/Clase/Log4Gambas3.class` as the source of truth for the reusable library
-- keep demo concerns out of the reusable logging class
-- document generated files vs source files clearly for contributors and agents
-- prefer stable naming conventions that do not rely on case differences
-- add a practical manual verification flow for log file rotation behavior
-
-## Related docs
-
-- `readme-es.md` — Spanish technical version
-- `spec.md` — architecture and technical findings
-- `agent.md` — agent operating guide
-- `tasks.md` — prioritized improvements
-
-## Manual verification
-
-To verify the current log rotation behavior manually:
-
-1. Open the project in Gambas3.
-2. Configure the demo form to use file output.
-3. Set a very small max file size.
-4. Send multiple test messages from the demo.
-5. Confirm that:
-   - daily log files are created in the configured path
-   - the active file rolls over to suffixed files when size is exceeded
-   - old files are removed when the configured max-file count is exceeded
+If you like the project, consider giving the repository a star.
