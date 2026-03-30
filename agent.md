@@ -63,6 +63,52 @@ This file captures the minimum context an agent should read before modifying thi
 - `clean-code`
 - `solid-architect-advisor` when architecture expands
 
+## Installed skills that are useful here
+
+These skills are currently available in the local machine and are the most relevant starting points for this repository:
+
+### Primary skills
+
+- `gambas3-modern-dev`
+  - use for Gambas3 architecture review, naming, safe refactors, and project structure analysis
+- `project-documentation`
+  - use for keeping docs split cleanly between current state, operational notes, and future work
+
+### Secondary skills
+
+- `clean-code`
+  - use when simplifying methods, extracting helpers, or improving readability
+- `solid-architect-advisor`
+  - use when evaluating larger structural changes or future modularization
+- `dry-code-enforcer`
+  - use when reviewing repetition across classes, forms, docs, or helper logic
+- `dry-refactoring`
+  - use for systematic duplication removal once repeated patterns are confirmed
+- `software-architecture`
+  - use when the project grows beyond its current small-library scope
+- `documentation-templates`
+  - use when adding consistent templates for new docs or guides
+
+### Not primary for this repo right now
+
+- `database-testing`
+  - only relevant if the project later adds persistence or integration scenarios
+- `git-expert-committer`
+  - useful for atomic commits and PR hygiene, but it should follow the current repository language decision for each change
+
+## Suggested session bootstrap
+
+When starting a new session in this repository, prefer this order:
+
+1. Read `agent.md`
+2. Read `spec.md`
+3. Read `tasks.md`
+4. Check `git status`
+5. Choose one of these skills first:
+   - `gambas3-modern-dev` for code or architecture work
+   - `project-documentation` for docs work
+   - `clean-code` for focused internal cleanup
+
 ## MCP / memory guidance
 
 - Use Engram at session start/end.
