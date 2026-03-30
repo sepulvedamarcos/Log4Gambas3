@@ -2,15 +2,15 @@
 
 ## High priority
 
-- [ ] Fix message formatting in `.src/Clase/Log4Gambas3.class` so timestamp, app name, level and message are all preserved.
-- [ ] Remove the trailing space in generated log filenames.
+- [x] Fix message formatting in `.src/Clase/Log4Gambas3.class` so timestamp, app name, level and message are all preserved.
+- [x] Remove the trailing space in generated log filenames.
 - [ ] Define and enforce a clear policy for source vs generated Gambas files in the repository.
 - [ ] Review current tracked changes in `.project`, `.component`, `.version`, `.src/FMain.class`, `.src/FMain.form`, `.app.png`, `.icon.png`.
 
 ## Medium priority
 
-- [ ] Implement real max-size rotation or rename `SetMaxFileSize()` to reflect current behavior.
-- [ ] Filter rotation by current app prefix, not only by `*.log`.
+- [x] Implement real max-size rotation or rename `SetMaxFileSize()` to reflect current behavior.
+- [x] Filter rotation by current app prefix, not only by `*.log`.
 - [ ] Decide whether the demo app should stay in the same repo/package as the reusable class.
 - [ ] Remove or ignore backup files such as `.src/FMain.class~`.
 - [ ] Improve nomenclature consistency in code and docs (`logger`, `log output`, `max files`, `app name`, etc.).
@@ -19,7 +19,7 @@
 
 - [ ] Add an explicit packaging/install workflow for producing the `.gambas` library artifact.
 - [ ] Document release/versioning strategy.
-- [ ] Add a small “how to test manually” section for the demo form.
+- [x] Add a small “how to test manually” section for the demo form.
 - [ ] Add examples for console-only, file-only and both outputs.
 
 ## Gambas-specific housekeeping

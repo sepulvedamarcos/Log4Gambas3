@@ -77,12 +77,9 @@ From `.project`:
 
 ### Issues discovered
 
-1. `SendMessage()` overwrites the timestamp because the second assignment uses `=` instead of concatenation.
-2. `WriteToFile()` builds the filename with a trailing space after `.log`.
-3. `SetMaxFileSize()` stores a value but size-based rotation is not implemented.
-4. `CheckFileRotator()` deletes by alphabetical order of `*.log`, not strictly filtered by app prefix.
-5. Demo and library source are mixed in the same repository without a dedicated docs map for contributors.
-6. Existing repo state already contains local modifications in project metadata and IDE-generated assets.
+1. Demo and library source are mixed in the same repository without a dedicated docs map for contributors.
+2. Existing repo state already contains local modifications in project metadata and IDE-generated assets.
+3. There is still no automated verification workflow for file rotation scenarios.
 
 ## Source vs generated artifacts
 

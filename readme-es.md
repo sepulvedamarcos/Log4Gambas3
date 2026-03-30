@@ -56,9 +56,8 @@ Además guarda preferencias usando `gb.settings`.
 - el nombre del archivo rota por fecha
 - la rotación por cantidad de archivos está implementada
 - la salida a consola, archivo o ambas está implementada
-- `SetMaxFileSize()` existe, pero hoy no hace cumplir un límite real
-- el formateo del mensaje actualmente pisa el timestamp antes de concatenar el resto
-- el nombre del archivo log tiene un espacio sobrante al final
+- `SetMaxFileSize()` ya aplica rotación real por tamaño
+- cuando un archivo diario supera el tamaño configurado, la librería crea archivos con sufijos para ese mismo día
 
 ## Notas importantes sobre Gambas
 
@@ -73,6 +72,7 @@ Además guarda preferencias usando `gb.settings`.
 - mantener separada la lógica reutilizable de la lógica de demo
 - documentar con claridad qué archivos son fuente y cuáles son generados
 - evitar convenciones de nombres que dependan de mayúsculas/minúsculas
+- agregar una guía simple de validación manual para probar la rotación de logs
 
 ## Documentos relacionados
 
@@ -80,3 +80,16 @@ Además guarda preferencias usando `gb.settings`.
 - `spec.md` — especificación y hallazgos de arquitectura
 - `agent.md` — guía de trabajo para agentes
 - `tasks.md` — mejoras detectadas
+
+## Verificación manual
+
+Para probar manualmente la rotación actual de logs:
+
+1. Abre el proyecto en Gambas3.
+2. Configura el formulario demo para usar salida a archivo.
+3. Define un tamaño máximo muy pequeño.
+4. Envía varios mensajes de prueba desde la demo.
+5. Verifica que:
+   - se creen archivos diarios en la ruta configurada
+   - el archivo activo rote a archivos con sufijo cuando supera el tamaño máximo
+   - se eliminen archivos antiguos cuando se supera la cantidad máxima configurada
