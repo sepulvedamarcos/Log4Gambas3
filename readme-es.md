@@ -121,4 +121,4 @@ Las contribuciones son bienvenidas, ya sea reportando bugs, proponiendo mejoras 
 
 ---
 
-Si te gusta Gacela, considera darle una estrella al repositorio.
+Si te gusta, considera darle una estrella al repositorio.
