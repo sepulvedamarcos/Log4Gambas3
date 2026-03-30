@@ -9,7 +9,7 @@
 
 ## Medium priority
 
-- [ ] Implement real max-size rotation or rename `SetMaxFileSize()` to reflect current behavior.
+- [x] Implement real max-size rotation or rename `SetMaxFileSize()` to reflect current behavior.
 - [x] Filter rotation by current app prefix, not only by `*.log`.
 - [ ] Decide whether the demo app should stay in the same repo/package as the reusable class.
 - [ ] Remove or ignore backup files such as `.src/FMain.class~`.

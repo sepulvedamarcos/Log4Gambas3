@@ -117,8 +117,8 @@ Private Sub WriteToFile(messa As String)
   ' Verificar rotación de archivos
   CheckFileRotator()
 
-  ' Generar nombre de archivo con fecha
-  fileName = GetCurrentLogFile()
+  ' Generar nombre de archivo activo según fecha y tamaño
+  fileName = GetLogFileForMessage(messa)
 
   ' Abrir archivo (crear si no existe, o agregar al final)
   If Not Exist(fileName) Then
@@ -131,6 +131,9 @@ Private Sub WriteToFile(messa As String)
   Print #arch, messa
   Close #arch
 
+  ' Verificar nuevamente por si se creó un nuevo archivo
+  CheckFileRotator()
+
 Catch
   Print "Log4Gambas3 Error al escribir archivo: " & Error.Text
 
@@ -140,7 +143,6 @@ Private Sub CheckFileRotator()
 
   Dim filesLog As New String[]
   Dim olderFile As String
-  Dim i As Integer
 
   ' Crear directorio si no existe
   If Not IsDir($pathFiles) Then
@@ -151,28 +153,85 @@ Private Sub CheckFileRotator()
   filesLog = Dir($pathFiles, $appName & "-*.log")
 
   ' Si hay más archivos que el máximo permitido, eliminar los más antiguos
-  If filesLog.Count > $maxFiles Then
-    filesLog.Sort(gb.Ascent)
-
-    For i = 0 To filesLog.Count - $maxFiles - 1
-      olderFile = $pathFiles &/ filesLog[i]
-      If Exist(olderFile) Then
-        Try Kill olderFile
-        If Error Then
-          Print "Log4Gambas3: No se pudo eliminar " & olderFile
-        Endif
+  While filesLog.Count > $maxFiles
+    olderFile = GetOldestLogFile(filesLog)
+    If olderFile <> "" And Exist($pathFiles &/ olderFile) Then
+      Try Kill $pathFiles &/ olderFile
+      If Error Then
+        Print "Log4Gambas3: No se pudo eliminar " & ($pathFiles &/ olderFile)
+        Exit
       Endif
-    Next
-  Endif
+    Else
+      Exit
+    Endif
+
+    filesLog = Dir($pathFiles, $appName & "-*.log")
+  Wend
 
 Catch
   Print "Log4Gambas3 Error en rotación: " & Error.Text
 
 End
 
-Private Function GetCurrentLogFile() As String
+Private Function GetLogFileForMessage(messageText As String) As String
 
-  Return $pathFiles &/ $appName & "-" & Format(Date(Now), "yyyy-mm-dd") & ".log"
+  Dim filePath As String
+  Dim fileBase As String
+  Dim fileIndex As Integer
+
+  fileBase = GetCurrentLogFileBase()
+  filePath = fileBase & ".log"
+
+  While Exist(filePath)
+
+    If Not ShouldRotateFile(filePath, messageText) Then
+      Return filePath
+    Endif
+
+    fileIndex += 1
+    filePath = fileBase & "-" & Format(fileIndex, "000") & ".log"
+
+  Wend
+
+  Return filePath
+
+End
+
+Private Function GetCurrentLogFileBase() As String
+
+  Return $pathFiles &/ $appName & "-" & Format(Date(Now), "yyyy-mm-dd")
+
+End
+
+Private Function GetOldestLogFile(filesLog As String[]) As String
+
+  Dim currentFile As String
+  Dim currentPath As String
+  Dim oldestFile As String
+  Dim oldestPath As String
+  Dim oldestTime As Date
+
+  For Each currentFile In filesLog
+    currentPath = $pathFiles &/ currentFile
+
+    If oldestFile = "" Then
+      oldestFile = currentFile
+      oldestPath = currentPath
+      oldestTime = Stat(oldestPath).LastModified
+    Else If Stat(currentPath).LastModified < oldestTime Then
+      oldestFile = currentFile
+      oldestPath = currentPath
+      oldestTime = Stat(oldestPath).LastModified
+    Endif
+  Next
+
+  Return oldestFile
+
+End
+
+Private Function ShouldRotateFile(filePath As String, messageText As String) As Boolean
+
+  Return Stat(filePath).Size + Len(messageText) + 1 > $maxFileSize
 
 End
 

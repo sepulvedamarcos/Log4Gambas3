@@ -56,9 +56,8 @@ Además guarda preferencias usando `gb.settings`.
 - el nombre del archivo rota por fecha
 - la rotación por cantidad de archivos está implementada
 - la salida a consola, archivo o ambas está implementada
-- `SetMaxFileSize()` existe, pero hoy no hace cumplir un límite real
-- el formateo del mensaje actualmente pisa el timestamp antes de concatenar el resto
-- el nombre del archivo log tiene un espacio sobrante al final
+- `SetMaxFileSize()` ya aplica rotación real por tamaño
+- cuando un archivo diario supera el tamaño configurado, la librería crea archivos con sufijos para ese mismo día
 
 ## Notas importantes sobre Gambas
 
@@ -73,6 +72,7 @@ Además guarda preferencias usando `gb.settings`.
 - mantener separada la lógica reutilizable de la lógica de demo
 - documentar con claridad qué archivos son fuente y cuáles son generados
 - evitar convenciones de nombres que dependan de mayúsculas/minúsculas
+- agregar una guía simple de validación manual para probar la rotación de logs
 
 ## Documentos relacionados
 

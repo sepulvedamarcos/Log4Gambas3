@@ -56,9 +56,8 @@ It persists some UI settings through `gb.settings`.
 - date-based file naming is implemented
 - file count rotation is implemented
 - console/file/both outputs are implemented
-- max file size is configurable but not actually enforced yet
-- the log message formatter currently overwrites the timestamp section before appending the rest of the message
-- generated log filename currently contains a trailing space before the extension is closed
+- max file size rotation is implemented
+- when a daily log file exceeds the configured size, the library creates suffixed files for the same day
 
 ## Gambas-specific notes
 
@@ -73,6 +72,7 @@ It persists some UI settings through `gb.settings`.
 - keep demo concerns out of the reusable logging class
 - document generated files vs source files clearly for contributors and agents
 - prefer stable naming conventions that do not rely on case differences
+- add a practical manual verification flow for log file rotation behavior
 
 ## Related docs
 
