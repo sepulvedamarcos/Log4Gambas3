@@ -1,4 +1,5 @@
 # Log4Gambas3
+[Español](./README-es.md)
 
 ## Overview
 
