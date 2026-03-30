@@ -119,3 +119,5 @@ Contributions are welcome, whether you are reporting bugs, suggesting improvemen
 </p>
 
 ---
+
+If you like, consider starring the repository.
