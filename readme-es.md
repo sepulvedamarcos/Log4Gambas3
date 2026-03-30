@@ -76,7 +76,7 @@ Además guarda preferencias usando `gb.settings`.
 
 ## Documentos relacionados
 
-- `README.md` — versión comercial/corta
+- `README.md` — versión técnica en inglés
 - `spec.md` — especificación y hallazgos de arquitectura
 - `agent.md` — guía de trabajo para agentes
 - `tasks.md` — mejoras detectadas

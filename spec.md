@@ -130,8 +130,7 @@ From `.project`:
 
 ## Documentation split decided
 
-- `README.md`: short, persuasive, installation-focused
-- `rearme.md`: English technical readme
+- `README.md`: English technical readme
 - `readme-es.md`: Spanish technical readme
 - `agent.md`: operational guidance for agents
 - `tasks.md`: backlog and improvements

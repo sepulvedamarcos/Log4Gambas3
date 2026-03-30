@@ -1,54 +1,82 @@
 # Log4Gambas3
 
-Logging simple para proyectos Gambas3.
+## Overview
 
-## Propuesta de valor
+Log4Gambas3 is a small Gambas3 logging library packaged as a project that also includes a demo GUI application.
 
-Log4Gambas3 busca ofrecer una librería de logging chica, directa y fácil de integrar en proyectos Gambas3:
+Its main exported source lives in:
 
-- niveles clásicos: `Debug`, `Info`, `Warning`, `Error`, `Fatal`
-- salida a consola, archivo o ambas
-- rotación simple por fecha y límite de archivos
-- API corta, orientada a uso práctico
+- `.src/Clase/Log4Gambas3.class`
 
-## Por qué usarlo
+The project also includes a form-based demo:
 
-- evita montar una solución de logging más pesada
-- sirve como base entendible para aprender Gambas3 y empaquetado de componentes
-- trae una app/demo para probar comportamiento y configuración
+- `.src/FMain.class`
+- `.src/FMain.form`
 
-## Instalación
+## Project structure
 
-### Requisitos
+```text
+.src/Clase/Log4Gambas3.class   Main exported logging class
+.src/FMain.class               Demo form controller
+.src/FMain.form                Demo UI layout
+.project                       Gambas project metadata
+.component                     Component metadata
+.gambas/                       Generated/binary artifacts
+.desc/                         Generated descriptors/call metadata
+Iconos/                        Project icons
+```
 
-- Gambas3
-- Componentes usados por el proyecto:
-  - `gb.image`
-  - `gb.gui`
-  - `gb.form`
-  - `gb.settings`
+## Architecture discovered
 
-### Consideraciones importantes
+### 1. Library layer
 
-- Este repositorio contiene **código fuente de la librería** y una **aplicación demo**.
-- Los archivos `.class` y `.form` de Gambas son **texto plano**, aunque algunas herramientas los traten como binarios.
-- Los archivos `.gambas` sí corresponden a artefactos binarios/generados.
-- El proyecto tiene archivos del IDE que no siempre conviene versionar como fuente estable: `.gambas/`, `.desc/`, `.info`, `.startup`, `.settings`, imágenes generadas, etc.
+`Log4Gambas3.class` exposes:
 
-### Formas de usarlo
+- log levels
+- output modes
+- getters/setters for configuration
+- message formatting
+- file writing
+- file rotation by count
 
-1. Abrir este proyecto en Gambas3 y compilar/instalar el componente.
-2. Reutilizar la clase exportada ubicada en `.src/Clase/Log4Gambas3.class`.
-3. Tomar la demo incluida como referencia de integración.
+### 2. Demo/application layer
 
-## Estado del repositorio
+`FMain` is a manual test harness for:
 
-Este `README.md` queda intencionalmente como versión corta/comercial.
+- level selection
+- output selection
+- max files
+- max file size
+- test message emission
 
-Para documentación técnica y de trabajo con agentes:
+It persists some UI settings through `gb.settings`.
 
-- inglés: `rearme.md`
-- español: `readme-es.md`
-- arquitectura: `spec.md`
-- guía para agentes: `agent.md`
-- backlog técnico: `tasks.md`
+## Current behavior
+
+- date-based file naming is implemented
+- file count rotation is implemented
+- console/file/both outputs are implemented
+- max file size is configurable but not actually enforced yet
+- the log message formatter currently overwrites the timestamp section before appending the rest of the message
+- generated log filename currently contains a trailing space before the extension is closed
+
+## Gambas-specific notes
+
+- `.class` and `.form` files are plain text source files
+- `.gambas` files and content under `.gambas/` are generated/binary artifacts
+- Gambas is case-insensitive, so naming collisions are easier to introduce than in many other languages
+- form files should be changed carefully; moving logic out of forms is usually safer than deep UI edits
+
+## Development recommendations
+
+- treat `.src/Clase/Log4Gambas3.class` as the source of truth for the reusable library
+- keep demo concerns out of the reusable logging class
+- document generated files vs source files clearly for contributors and agents
+- prefer stable naming conventions that do not rely on case differences
+
+## Related docs
+
+- `readme-es.md` — Spanish technical version
+- `spec.md` — architecture and technical findings
+- `agent.md` — agent operating guide
+- `tasks.md` — prioritized improvements

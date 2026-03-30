@@ -39,6 +39,8 @@ This file captures the minimum context an agent should read before modifying thi
 
 ## Repository map
 
+- `README.md` — English technical readme
+- `readme-es.md` — Spanish technical readme
 - `.src/Clase/Log4Gambas3.class` — logging library
 - `.src/FMain.class` — demo controller
 - `.src/FMain.form` — demo UI
