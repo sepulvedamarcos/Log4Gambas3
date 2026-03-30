@@ -94,3 +94,31 @@ Para probar manualmente la rotación actual de logs:
    - se creen archivos diarios en la ruta configurada
    - el archivo activo rote a archivos con sufijo cuando supera el tamaño máximo
    - se eliminen archivos antiguos cuando se supera la cantidad máxima configurada
+
+## Contribuir
+
+Las contribuciones son bienvenidas, ya sea reportando bugs, proponiendo mejoras o enviando código.
+
+1. Haz un fork del repositorio
+2. Crea una rama (`git checkout -b feature/mi-cambio`)
+3. Haz commit de tus cambios
+4. Sube tu rama
+5. Abre un Pull Request
+
+## Contacto
+
+<p align="center">
+  <a href="https://www.linkedin.com/in/sepulvedamarcos">
+    <img src="https://img.shields.io/badge/LinkedIn-Marcos%20Sep%C3%BAlveda-blue?logo=linkedin&logoColor=white" />
+  </a>
+  <a href="mailto:sepulvedamarcos@gmail.com">
+    <img src="https://img.shields.io/badge/Email-sepulvedamarcos%40gmail.com-red?logo=gmail&logoColor=white" />
+  </a>
+  <a href="https://ko-fi.com/sepulvedamarcos">
+    <img src="https://img.shields.io/badge/Ko--fi-Apoyar%20con%20un%20caf%C3%A9-ff5e5b?logo=kofi&logoColor=white" />
+  </a>
+</p>
+
+---
+
+Si te gusta Gacela, considera darle una estrella al repositorio.
