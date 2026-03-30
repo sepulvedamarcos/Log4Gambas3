@@ -1,0 +1,82 @@
+# Log4Gambas3 — README técnico
+
+## Resumen
+
+Log4Gambas3 es una librería pequeña de logging para Gambas3 empaquetada dentro de un proyecto que además incluye una aplicación demo con interfaz gráfica.
+
+La fuente principal exportable está en:
+
+- `.src/Clase/Log4Gambas3.class`
+
+La demo está en:
+
+- `.src/FMain.class`
+- `.src/FMain.form`
+
+## Estructura del proyecto
+
+```text
+.src/Clase/Log4Gambas3.class   Clase principal exportable
+.src/FMain.class               Controlador del formulario demo
+.src/FMain.form                Layout de la UI demo
+.project                       Metadata del proyecto Gambas
+.component                     Metadata del componente
+.gambas/                       Artefactos generados/binarios
+.desc/                         Descriptores generados
+Iconos/                        Recursos visuales
+```
+
+## Arquitectura descubierta
+
+### 1. Capa librería
+
+La clase `Log4Gambas3` concentra:
+
+- niveles de logging
+- modos de salida
+- getters/setters de configuración
+- formateo del mensaje
+- escritura a archivo
+- rotación por cantidad de archivos
+
+### 2. Capa demo/aplicación
+
+`FMain` funciona como banco de pruebas manual para:
+
+- elegir nivel
+- elegir salida
+- definir cantidad máxima de archivos
+- definir tamaño máximo
+- enviar texto de prueba
+
+Además guarda preferencias usando `gb.settings`.
+
+## Estado actual
+
+- el nombre del archivo rota por fecha
+- la rotación por cantidad de archivos está implementada
+- la salida a consola, archivo o ambas está implementada
+- `SetMaxFileSize()` existe, pero hoy no hace cumplir un límite real
+- el formateo del mensaje actualmente pisa el timestamp antes de concatenar el resto
+- el nombre del archivo log tiene un espacio sobrante al final
+
+## Notas importantes sobre Gambas
+
+- los archivos `.class` y `.form` son **texto plano**
+- los `.gambas` y el contenido bajo `.gambas/` son artefactos generados/binarios
+- Gambas es **case-insensitive**
+- los formularios conviene tocarlos lo mínimo posible y mover lógica a clases o módulos cuando se pueda
+
+## Recomendaciones de desarrollo
+
+- tomar `.src/Clase/Log4Gambas3.class` como fuente real de la librería
+- mantener separada la lógica reutilizable de la lógica de demo
+- documentar con claridad qué archivos son fuente y cuáles son generados
+- evitar convenciones de nombres que dependan de mayúsculas/minúsculas
+
+## Documentos relacionados
+
+- `README.md` — versión técnica en inglés
+- `spec.md` — especificación y hallazgos de arquitectura
+- `agent.md` — guía de trabajo para agentes
+- `tasks.md` — mejoras detectadas
